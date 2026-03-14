@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModbusHub &ndash; User Manual</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #1e1e1e;
+  background: #f8f9fb;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+.page-wrap { max-width: 960px; margin: 0 auto; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+
+/* ── Hero Header ──────────────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #0078d4 0%, #005a9e 100%);
+  color: #fff;
+  padding: 40px 48px 32px;
+}
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+.hero .subtitle { font-size: 14px; opacity: .85; }
+.hero .badges { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+.badge {
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Table of Contents ────────────────────────────────────────────────────── */
+.toc {
+  background: #f0f4fa;
+  border-left: 4px solid #0078d4;
+  padding: 18px 24px;
+}
+.toc-title { font-weight: 700; font-size: 12px; color: #0078d4; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+.toc ol { padding-left: 20px; columns: 2; }
+.toc li { margin: 3px 0; }
+.toc a { color: #0078d4; text-decoration: none; font-size: 13px; }
+.toc a:hover { text-decoration: underline; }
+
+/* ── Content ──────────────────────────────────────────────────────────────── */
+.content { padding: 32px 48px 48px; }
+
+/* ── Headings ─────────────────────────────────────────────────────────────── */
+h2 {
+  font-size: 17px; font-weight: 700;
+  margin: 36px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #0078d4;
+  color: #003f80;
+}
+h2:first-child { margin-top: 0; }
+h3 { font-size: 14px; font-weight: 700; margin: 18px 0 6px; color: #0063b1; }
+h4 { font-size: 13px; font-weight: 600; margin: 12px 0 4px; color: #333; }
+p  { margin: 6px 0 10px; }
+ul, ol { padding-left: 22px; margin: 6px 0 10px; }
+li { margin: 3px 0; }
+
+/* ── Code ─────────────────────────────────────────────────────────────────── */
+code {
+  background: #eef2fb; color: #0a3069;
+  padding: 1px 6px; border-radius: 4px;
+  font-family: Consolas, "Courier New", monospace; font-size: 12.5px;
+}
+pre {
+  background: #1e1e2e; color: #cdd6f4;
+  padding: 14px 18px; border-radius: 8px;
+  font-family: Consolas, "Courier New", monospace; font-size: 12.5px;
+  line-height: 1.6; overflow-x: auto; margin: 10px 0;
+}
+pre .addr  { color: #89b4fa; }
+pre .fc    { color: #cba6f7; }
+pre .data  { color: #a6e3a1; }
+pre .crc   { color: #f38ba8; }
+pre .mbap  { color: #fab387; }
+pre .cmt   { color: #6c7086; font-style: italic; }
+
+/* ── Tables ───────────────────────────────────────────────────────────────── */
+table { border-collapse: collapse; width: 100%; margin: 10px 0 16px; font-size: 13px; }
+th { background: #0078d4; color: #fff; padding: 8px 12px; text-align: left; font-weight: 600; }
+td { padding: 7px 12px; border-bottom: 1px solid #e0e7f0; vertical-align: top; }
+tr:nth-child(even) td { background: #f5f8ff; }
+tr:hover td { background: #eaf2ff; }
+
+/* ── Callout boxes ────────────────────────────────────────────────────────── */
+.tip, .warn, .info, .note {
+  padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px;
+}
+.tip  { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+.warn { background: #fff8e1; border-left: 4px solid #f57f17; }
+.info { background: #e3f2fd; border-left: 4px solid #0078d4; }
+.note { background: #f3e5f5; border-left: 4px solid #7b1fa2; }
+.tip::before  { content: "Tip: ";  font-weight: 700; }
+.warn::before { content: "Warning: "; font-weight: 700; }
+.info::before { content: "Info: "; font-weight: 700; }
+.note::before { content: "Note: "; font-weight: 700; }
+
+/* ── Tab chip ─────────────────────────────────────────────────────────────── */
+.tab-chip {
+  display: inline-block; background: #0078d4; color: #fff;
+  border-radius: 4px; padding: 2px 10px;
+  font-size: 12px; font-weight: 700; margin-right: 6px; vertical-align: middle;
+}
+
+/* ── Packet diagram ───────────────────────────────────────────────────────── */
+.pkt { display: flex; flex-wrap: wrap; gap: 4px; margin: 10px 0; font-family: Consolas, monospace; font-size: 12px; }
+.pkt-cell { border: 1px solid #90a4c0; padding: 5px 8px; border-radius: 4px; text-align: center; background: #eef4ff; min-width: 56px; }
+.pkt-cell .lbl { display: block; font-size: 10px; color: #5a6880; font-style: italic; }
+.pkt-cell .val { display: block; font-weight: 700; color: #003f80; }
+.pkt-cell.hi   { background: #dceeff; }
+.pkt-cell.fc   { background: #d4edda; }
+.pkt-cell.crc  { background: #fff3cd; }
+.pkt-cell.mbap { background: #fce4ec; }
+
+/* ── Step list ────────────────────────────────────────────────────────────── */
+.steps { counter-reset: step; list-style: none; padding: 0; }
+.steps li { counter-increment: step; display: flex; gap: 12px; margin: 8px 0; align-items: flex-start; }
+.steps li::before {
+  content: counter(step);
+  background: #0078d4; color: #fff;
+  border-radius: 50%; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+}
+
+/* ── Divider & footer ─────────────────────────────────────────────────────── */
+hr { border: none; border-top: 1px solid #dde3f0; margin: 28px 0; }
+.footer {
+  background: #f0f4fa; border-top: 1px solid #dde3f0;
+  padding: 16px 48px; font-size: 12px; color: #666;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <h1>&#9889; ModbusHub &ndash; TCP/RTU Master</h1>
+  <p class="subtitle">Complete User Manual &amp; Modbus Protocol Reference</p>
+  <div class="badges">
+    <span class="badge">Version 1.0</span>
+    <span class="badge">Qt 5 / Qt 6 (C++11)</span>
+    <span class="badge">C (C99)</span>
+    <span class="badge">C99 Backend &middot; Custom Modbus</span>
+    <span class="badge">Windows &middot; Linux &middot; macOS</span>
+    <span class="badge">MIT License</span>
+  </div>
+</div>
+
+<!-- ══ TABLE OF CONTENTS ═════════════════════════════════════════════════ -->
+<div class="toc">
+  <div class="toc-title">Table of Contents</div>
+  <ol>
+    <li><a href="#overview">Application Overview</a></li>
+    <li><a href="#tab-master">Tab 1 &mdash; Master</a></li>
+    <li><a href="#tab-gateway">Tab 2 &mdash; Gateway</a></li>
+    <li><a href="#tab-devices">Tab 3 &mdash; Devices</a></li>
+    <li><a href="#tab-dashboard">Tab 4 &mdash; Dashboard</a></li>
+    <li><a href="#tab-logs">Tab 5 &mdash; Logs</a></li>
+    <li><a href="#tab-settings">Tab 6 &mdash; Settings</a></li>
+    <li><a href="#modbus-intro">Modbus Protocol Introduction</a></li>
+    <li><a href="#modbus-data">Data Model &amp; Register Types</a></li>
+    <li><a href="#modbus-rtu">Modbus RTU Framing</a></li>
+    <li><a href="#modbus-tcp">Modbus TCP/IP Framing</a></li>
+    <li><a href="#function-codes">Function Code Reference</a></li>
+    <li><a href="#exceptions">Exception Codes</a></li>
+    <li><a href="#flow">Transaction Flow</a></li>
+    <li><a href="#about">About</a></li>
+  </ol>
+</div>
+
+<div class="content">
+
+<!-- ══ OVERVIEW ══════════════════════════════════════════════════════════ -->
+<h2 id="overview">1. Application Overview</h2>
+<p>
+  <strong>ModbusHub</strong> is a cross-platform desktop tool for engineers who need to inspect,
+  debug, and configure Modbus-based industrial devices. It supports both
+  <strong>Modbus TCP</strong> (Ethernet) and <strong>Modbus RTU</strong> (serial RS-232/RS-485).
+</p>
+<table>
+  <tr><th>Feature</th><th>Description</th></tr>
+  <tr><td>Direct Register Access</td><td>Read and write coils, discrete inputs, holding and input registers</td></tr>
+  <tr><td>Auto-Poll</td><td>Continuously read registers at a configurable millisecond interval</td></tr>
+  <tr><td>Protocol Gateway</td><td>Bridge Modbus TCP &harr; RTU transparently in both directions</td></tr>
+  <tr><td>Multi-Device Manager</td><td>Manage, connect, and monitor a fleet of devices simultaneously</td></tr>
+  <tr><td>Network Scanner</td><td>Discover Modbus TCP devices across an IP address range</td></tr>
+  <tr><td>Live Dashboard</td><td>Metric cards and real-time polling graph (Qt 6)</td></tr>
+  <tr><td>Alarm Manager</td><td>Threshold-based alarms with event logging</td></tr>
+  <tr><td>Structured Logging</td><td>Filterable log with CSV/text export</td></tr>
+  <tr><td>Dark Mode</td><td>Light and dark macOS-inspired colour schemes (Settings tab)</td></tr>
+</table>
+
+<hr>
+
+<!-- ══ TAB 1 — MASTER ═════════════════════════════════════════════════════ -->
+<h2 id="tab-master">2. <span class="tab-chip">Tab 1</span> Master</h2>
+<p>The primary tool for direct, interactive Modbus communication. Connect to a single slave device and issue read/write requests manually or via auto-poll.</p>
+
+<h3>Connection Settings</h3>
+<table>
+  <tr><th>Field</th><th>Mode</th><th>Description</th></tr>
+  <tr><td><strong>Mode</strong></td><td>Both</td><td>Select <code>Modbus TCP</code> or <code>Modbus RTU</code>. Relevant fields are enabled automatically.</td></tr>
+  <tr><td><strong>IP Address</strong></td><td>TCP</td><td>IPv4 address of the target Modbus TCP device (e.g. <code>192.168.1.10</code>).</td></tr>
+  <tr><td><strong>Port</strong></td><td>TCP</td><td>TCP port. Standard Modbus port is <code>502</code>.</td></tr>
+  <tr><td><strong>COM Port</strong></td><td>RTU</td><td>Serial port: <code>COM3</code> on Windows, <code>/dev/ttyUSB0</code> on Linux.</td></tr>
+  <tr><td><strong>Baud Rate</strong></td><td>RTU</td><td><code>9600</code>, <code>19200</code>, <code>38400</code>, <code>57600</code>, <code>115200</code> &hellip; Custom values may be typed.</td></tr>
+  <tr><td><strong>Parity</strong></td><td>RTU</td><td><code>None</code> (most common), <code>Even</code>, or <code>Odd</code>. Must match the slave.</td></tr>
+  <tr><td><strong>Slave ID</strong></td><td>Both</td><td>Modbus unit identifier: <strong>1&ndash;247</strong>. Use <code>0</code> for broadcast (no response expected).</td></tr>
+</table>
+
+<h3>Function Codes</h3>
+<table>
+  <tr><th>Function</th><th>Code</th><th>R</th><th>W</th><th>Data</th></tr>
+  <tr><td>Read Coils</td><td><code>0x01</code></td><td>&#10003;</td><td>&#10007;</td><td>1-bit digital output</td></tr>
+  <tr><td>Read Discrete Inputs</td><td><code>0x02</code></td><td>&#10003;</td><td>&#10007;</td><td>1-bit digital input (read-only)</td></tr>
+  <tr><td>Read Holding Registers</td><td><code>0x03</code></td><td>&#10003;</td><td>&#10003;</td><td>16-bit word, read/write</td></tr>
+  <tr><td>Read Input Registers</td><td><code>0x04</code></td><td>&#10003;</td><td>&#10007;</td><td>16-bit word, read-only</td></tr>
+  <tr><td>Write Single Coil</td><td><code>0x05</code></td><td>&#10007;</td><td>&#10003;</td><td><code>0xFF00</code>=ON, <code>0x0000</code>=OFF</td></tr>
+  <tr><td>Write Single Register</td><td><code>0x06</code></td><td>&#10007;</td><td>&#10003;</td><td>One 16-bit value</td></tr>
+  <tr><td>Write Multiple Coils</td><td><code>0x0F</code></td><td>&#10007;</td><td>&#10003;</td><td>Up to 1 968 coils</td></tr>
+  <tr><td>Write Multiple Registers</td><td><code>0x10</code></td><td>&#10007;</td><td>&#10003;</td><td>Up to 123 registers</td></tr>
+</table>
+
+<h4>How to perform a read:</h4>
+<ol class="steps">
+  <li>Select the <strong>Function Code</strong> (e.g. Read Holding Registers 0x03).</li>
+  <li>Enter the <strong>Address</strong> (0-based). For device register 40001, enter <code>0</code>.</li>
+  <li>Enter the <strong>Quantity</strong> (number of registers/coils).</li>
+  <li>Choose display <strong>Format</strong>: Decimal, Hexadecimal, or Octal.</li>
+  <li>Click <strong>Read</strong>. Results appear in the Register Values panel.</li>
+</ol>
+
+<h4>How to perform a write:</h4>
+<ol class="steps">
+  <li>Select a write Function Code (0x05, 0x06, 0x0F, or 0x10).</li>
+  <li>Enter the target <strong>Address</strong>.</li>
+  <li>Enter <strong>Value(s)</strong> separated by spaces (e.g. <code>100 200 300</code>).</li>
+  <li>Click <strong>Write</strong>. The slave echoes the request on success.</li>
+</ol>
+
+<h4>Auto-Poll:</h4>
+<p>Tick <strong>Auto-Poll</strong> and set an interval in milliseconds to repeat the last read continuously. Values are appended to the Register Values panel and streamed to the Dashboard graph.</p>
+<div class="tip">Set the poll interval to at least twice the expected device response time to avoid timeout errors.</div>
+
+<hr>
+
+<!-- ══ TAB 2 — GATEWAY ════════════════════════════════════════════════════ -->
+<h2 id="tab-gateway">3. <span class="tab-chip">Tab 2</span> Gateway</h2>
+<p>Acts as a transparent protocol converter between Modbus TCP and Modbus RTU.</p>
+<table>
+  <tr><th>Mode</th><th>Direction</th><th>Use Case</th></tr>
+  <tr><td><strong>RTU &rarr; TCP</strong></td><td>Listens for Modbus TCP clients; forwards frames to an RTU slave on serial</td><td>Connect a legacy RTU device to an Ethernet SCADA system</td></tr>
+  <tr><td><strong>TCP &rarr; RTU</strong></td><td>Accepts Modbus TCP requests; translates to RTU frames on the serial bus</td><td>Control RTU devices from a TCP master (PLC, HMI)</td></tr>
+</table>
+<ul>
+  <li><strong>TCP Listen IP</strong> &mdash; <code>0.0.0.0</code> listens on all network interfaces.</li>
+  <li><strong>Port</strong> &mdash; Standard is <code>502</code>.</li>
+  <li><strong>COM Port / Baud Rate / Parity</strong> &mdash; Must exactly match the RTU device settings.</li>
+</ul>
+<p>Click <strong>Start Gateway</strong>. All forwarded frames and errors appear in the Gateway Log pane. Click <strong>Stop Gateway</strong> to shut down.</p>
+<div class="warn">Do not use the Master tab and Gateway tab on the same COM port simultaneously. They will conflict.</div>
+
+<hr>
+
+<!-- ══ TAB 3 — DEVICES ═══════════════════════════════════════════════════ -->
+<h2 id="tab-devices">4. <span class="tab-chip">Tab 3</span> Devices</h2>
+<p>Manage a fleet of Modbus devices from one view. Unlike the Master tab (single device, interactive), the Devices tab is designed for <em>continuous monitoring</em> of many devices.</p>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td>ID</td><td>Auto-assigned sequential identifier</td></tr>
+  <tr><td>Name</td><td>Human-readable label</td></tr>
+  <tr><td>Type</td><td><code>TCP</code> or <code>RTU</code></td></tr>
+  <tr><td>Connection</td><td>IP:Port (TCP) or COM port + baud rate (RTU)</td></tr>
+  <tr><td>Slave ID</td><td>Modbus unit address (1&ndash;247)</td></tr>
+  <tr><td>Poll Interval</td><td>How often to read registers when monitoring (milliseconds)</td></tr>
+  <tr><td>Enabled</td><td>Include in Connect All / Monitor All operations</td></tr>
+  <tr><td>Status</td><td>Live connection status</td></tr>
+</table>
+<h4>Network Scanner:</h4>
+<ol class="steps">
+  <li>Enter <strong>Start IP</strong> and <strong>End IP</strong> (e.g. <code>192.168.1.1</code> to <code>192.168.1.254</code>).</li>
+  <li>Click <strong>Scan Network</strong>. ModbusHub probes port 502 on each address.</li>
+  <li>Responding devices appear in the Scan Results list.</li>
+  <li>Click <strong>Stop Scan</strong> to abort early.</li>
+</ol>
+<div class="info">Device configuration is automatically saved to <code>devices.ini</code> in the working directory and reloaded on next application start.</div>
+
+<hr>
+
+<!-- ══ TAB 4 — DASHBOARD ══════════════════════════════════════════════════ -->
+<h2 id="tab-dashboard">5. <span class="tab-chip">Tab 4</span> Dashboard</h2>
+<ul>
+  <li><strong>System Metrics</strong> &mdash; Six summary cards showing total devices, connected count, active alarms, and more. Click <strong>Refresh Dashboard</strong> to update.</li>
+  <li><strong>Polling Graph</strong> (Qt 6 only) &mdash; Scrolling real-time chart of register values during an active Auto-Poll session.</li>
+  <li><strong>Configure Alarms</strong> &mdash; Per-register threshold alarms. Triggered events are logged in the System log category and shown in the status bar.</li>
+</ul>
+
+<hr>
+
+<!-- ══ TAB 5 — LOGS ══════════════════════════════════════════════════════ -->
+<h2 id="tab-logs">6. <span class="tab-chip">Tab 5</span> Logs</h2>
+<p>Rolling filterable application log, keeping the most recent <strong>1 000</strong> entries.</p>
+<table>
+  <tr><th>Category</th><th>Contains</th></tr>
+  <tr><td><code>All</code></td><td>Every log entry combined</td></tr>
+  <tr><td><code>Master</code></td><td>TCP/RTU connection events, read/write results, poll data</td></tr>
+  <tr><td><code>Gateway</code></td><td>Gateway start/stop, forwarded frame activity</td></tr>
+  <tr><td><code>Devices</code></td><td>Device add/edit/remove, connect/disconnect, poll results</td></tr>
+  <tr><td><code>System</code></td><td>Startup, shutdown, alarm events, file exports, UI changes</td></tr>
+</table>
+<p>Use the <strong>Category</strong> dropdown to filter. Click <strong>Save Log</strong> to export to <code>.txt</code> or <code>.csv</code>. Click <strong>Clear Log</strong> to erase entries from memory.</p>
+<div class="note">Export logs regularly &mdash; entries older than the 1 000 entry limit are discarded automatically.</div>
+
+<hr>
+
+<!-- ══ TAB 6 — SETTINGS ══════════════════════════════════════════════════ -->
+<h2 id="tab-settings">7. <span class="tab-chip">Tab 6</span> Settings</h2>
+
+<h3>Appearance &mdash; Dark Mode</h3>
+<p>The <strong>Enable Dark Mode</strong> checkbox switches the entire application colour scheme immediately, no restart required.</p>
+<table>
+  <tr><th>State</th><th>Stylesheet</th><th>Look &amp; Feel</th></tr>
+  <tr><td><strong>Off</strong> (default)</td><td><code>macos_style.qss</code></td><td>White/light-grey background, blue accents &mdash; macOS-inspired light theme</td></tr>
+  <tr><td><strong>On</strong></td><td><code>macos_style_dark.qss</code></td><td>Dark charcoal background (<code>#1c1c1e</code>), muted text &mdash; macOS-inspired dark theme</td></tr>
+</table>
+<div class="info">The application first loads the QSS file from disk (working directory or executable directory). If not found it falls back to a built-in minimal stylesheet embedded in the binary.</div>
+
+<h3>User Manual</h3>
+<p>The <strong>Open User Manual</strong> button extracts this document from the compiled application resources, writes it to a temporary file, and opens it in your default web browser &mdash; exactly the page you are reading now.</p>
+
+<hr>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- ══ MODBUS PROTOCOL GUIDE ════════════════════════════════════════════ -->
+<h2 id="modbus-intro">8. Modbus Protocol &mdash; Introduction</h2>
+<p><strong>Modbus</strong> is a serial communication protocol developed by <em>Modicon</em> in 1979 for connecting PLCs. It is the most widely deployed open protocol in industrial automation and is supported by thousands of sensors, actuators, and controllers worldwide.</p>
+
+<h3>Master / Slave Architecture</h3>
+<ul>
+  <li>Exactly <strong>one master</strong> (client) exists per bus. Only the master initiates requests.</li>
+  <li>Up to <strong>247 slaves</strong> (servers), each with a unique address (1&ndash;247).</li>
+  <li>Slaves <em>only</em> reply; they never send unsolicited data.</li>
+  <li>Address <strong>0</strong> is broadcast (no response expected).</li>
+</ul>
+
+<h3>Variant Comparison</h3>
+<table>
+  <tr><th>Variant</th><th>Physical Medium</th><th>Framing</th><th>Error Check</th><th>Max Nodes</th></tr>
+  <tr><td><strong>Modbus RTU</strong></td><td>RS-232 / RS-485</td><td>Binary (compact)</td><td>CRC-16</td><td>247</td></tr>
+  <tr><td><strong>Modbus ASCII</strong></td><td>RS-232 / RS-485</td><td>ASCII hex (human-readable)</td><td>LRC</td><td>247</td></tr>
+  <tr><td><strong>Modbus TCP/IP</strong></td><td>Ethernet / Wi-Fi</td><td>TCP + MBAP header</td><td>TCP checksum</td><td>Unlimited</td></tr>
+</table>
+
+<hr>
+
+<!-- ══ DATA MODEL ════════════════════════════════════════════════════════ -->
+<h2 id="data-model">9. Modbus Data Model</h2>
+<p>Every device exposes up to four independent data tables. ModbusHub addresses all tables using <strong>0-based</strong> register addresses (the wire address), which is one less than the 1-based notation common in device datasheets.</p>
+<table>
+  <tr><th>Table</th><th>1-based Range</th><th>Wire Address</th><th>Type</th><th>Master Access</th><th>Typical Use</th></tr>
+  <tr><td><strong>Coils</strong></td><td>00001 &ndash; 09999</td><td>0 &ndash; 9998</td><td>1-bit</td><td>R + W</td><td>Digital outputs (relay, valve)</td></tr>
+  <tr><td><strong>Discrete Inputs</strong></td><td>10001 &ndash; 19999</td><td>0 &ndash; 9998</td><td>1-bit</td><td>R only</td><td>Digital inputs (switch, sensor)</td></tr>
+  <tr><td><strong>Input Registers</strong></td><td>30001 &ndash; 39999</td><td>0 &ndash; 9998</td><td>16-bit word</td><td>R only</td><td>Measurements (temperature, flow)</td></tr>
+  <tr><td><strong>Holding Registers</strong></td><td>40001 &ndash; 49999</td><td>0 &ndash; 9998</td><td>16-bit word</td><td>R + W</td><td>Set-points, configuration</td></tr>
+</table>
+<div class="info">Datasheet says register 40010? Enter <strong>9</strong> in ModbusHub (40010 &minus; 40001 = 9).</div>
+
+<hr>
+
+<!-- ══ RTU FRAMING ════════════════════════════════════════════════════════ -->
+<h2 id="rtu-framing">10. Modbus RTU Frame Structure</h2>
+<p>RTU transmits raw binary bytes. Frame boundaries are defined by <strong>silent gaps &ge; 3.5 character times</strong> &mdash; there are no start/stop delimiter bytes.</p>
+
+<table>
+  <tr><th>Field</th><th>Bytes</th><th>Description</th></tr>
+  <tr><td><strong>Slave Address</strong></td><td>1</td><td>Destination slave 1&ndash;247; 0 = broadcast</td></tr>
+  <tr><td><strong>Function Code</strong></td><td>1</td><td>Operation to perform (0x01 &ndash; 0x7F)</td></tr>
+  <tr><td><strong>Data</strong></td><td>0 &ndash; 252</td><td>Request parameters or response payload</td></tr>
+  <tr><td><strong>CRC-16</strong></td><td>2</td><td>Little-endian CRC for error detection</td></tr>
+</table>
+
+<h4>Annotated Example &mdash; Read 3 Holding Registers from slave 1, address 0:</h4>
+<div class="pkt">
+  <div class="pkt-cell">01<br><small>Slave</small></div>
+  <div class="pkt-cell fc">03<br><small>FC</small></div>
+  <div class="pkt-cell">00<br><small>Addr Hi</small></div>
+  <div class="pkt-cell">00<br><small>Addr Lo</small></div>
+  <div class="pkt-cell">00<br><small>Qty Hi</small></div>
+  <div class="pkt-cell">03<br><small>Qty Lo</small></div>
+  <div class="pkt-cell crc">05<br><small>CRC Lo</small></div>
+  <div class="pkt-cell crc">CB<br><small>CRC Hi</small></div>
+</div>
+
+<h4>Response &mdash; 3 registers (values 0x0064, 0x00C8, 0x012C):</h4>
+<div class="pkt">
+  <div class="pkt-cell">01<br><small>Slave</small></div>
+  <div class="pkt-cell fc">03<br><small>FC</small></div>
+  <div class="pkt-cell hi">06<br><small>Byte Cnt</small></div>
+  <div class="pkt-cell">00<br><small>R1 Hi</small></div>
+  <div class="pkt-cell">64<br><small>R1 Lo</small></div>
+  <div class="pkt-cell">00<br><small>R2 Hi</small></div>
+  <div class="pkt-cell">C8<br><small>R2 Lo</small></div>
+  <div class="pkt-cell">01<br><small>R3 Hi</small></div>
+  <div class="pkt-cell">2C<br><small>R3 Lo</small></div>
+  <div class="pkt-cell crc">xx<br><small>CRC Lo</small></div>
+  <div class="pkt-cell crc">xx<br><small>CRC Hi</small></div>
+</div>
+<div class="warn">RTU uses a half-duplex bus. The master must wait for the complete slave response (or for a timeout) before sending the next request.</div>
+
+<hr>
+
+<!-- ══ TCP FRAMING ════════════════════════════════════════════════════════ -->
+<h2 id="tcp-framing">11. Modbus TCP Frame Structure (MBAP)</h2>
+<p>Modbus TCP encapsulates the PDU inside a 7-byte <strong>MBAP header</strong> (Modbus Application Protocol header) sent over a standard TCP socket on port <strong>502</strong>. There is no CRC because TCP provides its own error checking.</p>
+
+<table>
+  <tr><th>MBAP Field</th><th>Bytes</th><th>Description</th></tr>
+  <tr><td><strong>Transaction ID</strong></td><td>2</td><td>Incremented by master; slave echoes it to match responses</td></tr>
+  <tr><td><strong>Protocol ID</strong></td><td>2</td><td>Always <code>0x0000</code> for Modbus</td></tr>
+  <tr><td><strong>Length</strong></td><td>2</td><td>Number of bytes that follow (Unit ID + PDU)</td></tr>
+  <tr><td><strong>Unit ID</strong></td><td>1</td><td>Slave address (same role as RTU slave address)</td></tr>
+  <tr><td colspan="3"><em>PDU follows immediately</em></td></tr>
+  <tr><td><strong>Function Code</strong></td><td>1</td><td>Same codes as RTU</td></tr>
+  <tr><td><strong>Data</strong></td><td>varies</td><td>Request parameters or response payload</td></tr>
+</table>
+
+<h4>Annotated Example &mdash; Same read request (slave 1, FC 03, start 0, qty 3) over TCP:</h4>
+<div class="pkt">
+  <div class="pkt-cell mbap">00<br><small>Tx Hi</small></div>
+  <div class="pkt-cell mbap">01<br><small>Tx Lo</small></div>
+  <div class="pkt-cell mbap">00<br><small>Proto Hi</small></div>
+  <div class="pkt-cell mbap">00<br><small>Proto Lo</small></div>
+  <div class="pkt-cell mbap">00<br><small>Len Hi</small></div>
+  <div class="pkt-cell mbap">06<br><small>Len Lo</small></div>
+  <div class="pkt-cell mbap">01<br><small>Unit</small></div>
+  <div class="pkt-cell fc">03<br><small>FC</small></div>
+  <div class="pkt-cell">00<br><small>Addr Hi</small></div>
+  <div class="pkt-cell">00<br><small>Addr Lo</small></div>
+  <div class="pkt-cell">00<br><small>Qty Hi</small></div>
+  <div class="pkt-cell">03<br><small>Qty Lo</small></div>
+</div>
+<div class="info">TCP allows multiple outstanding requests using different Transaction IDs, enabling pipeline operation with modern devices.</div>
+
+<hr>
+
+<!-- ══ FUNCTION CODE REFERENCE ═══════════════════════════════════════════ -->
+<h2 id="function-codes">12. Function Code Reference</h2>
+<table>
+  <tr><th>Code</th><th>Name</th><th>Data Table</th><th>Read</th><th>Write</th><th>Max per Request</th></tr>
+  <tr><td><code>0x01</code></td><td>Read Coils</td><td>Coils</td><td>&#10003;</td><td></td><td>2000 coils</td></tr>
+  <tr><td><code>0x02</code></td><td>Read Discrete Inputs</td><td>Discrete Inputs</td><td>&#10003;</td><td></td><td>2000 inputs</td></tr>
+  <tr><td><code>0x03</code></td><td>Read Holding Registers</td><td>Holding Regs</td><td>&#10003;</td><td>&#10003;</td><td>125 registers</td></tr>
+  <tr><td><code>0x04</code></td><td>Read Input Registers</td><td>Input Regs</td><td>&#10003;</td><td></td><td>125 registers</td></tr>
+  <tr><td><code>0x05</code></td><td>Write Single Coil</td><td>Coils</td><td></td><td>&#10003;</td><td>1 coil</td></tr>
+  <tr><td><code>0x06</code></td><td>Write Single Register</td><td>Holding Regs</td><td></td><td>&#10003;</td><td>1 register</td></tr>
+  <tr><td><code>0x0F</code></td><td>Write Multiple Coils</td><td>Coils</td><td></td><td>&#10003;</td><td>1968 coils</td></tr>
+  <tr><td><code>0x10</code></td><td>Write Multiple Registers</td><td>Holding Regs</td><td></td><td>&#10003;</td><td>123 registers</td></tr>
+  <tr><td><code>0x11</code></td><td>Report Server ID</td><td>&ndash;</td><td>&#10003;</td><td></td><td>Device-defined</td></tr>
+  <tr><td><code>0x16</code></td><td>Mask Write Register</td><td>Holding Regs</td><td></td><td>&#10003;</td><td>1 register</td></tr>
+  <tr><td><code>0x17</code></td><td>Read/Write Multiple Regs</td><td>Holding Regs</td><td>&#10003;</td><td>&#10003;</td><td>R:125 / W:121</td></tr>
+  <tr><td><code>0x80+</code></td><td>Exception Response</td><td>&ndash;</td><td></td><td></td><td>MSB set = error; low 7 bits = original FC</td></tr>
+</table>
+
+<hr>
+
+<!-- ══ EXCEPTION CODES ═══════════════════════════════════════════════════ -->
+<h2 id="exception-codes">13. Exception (Error) Codes</h2>
+<p>When a slave cannot execute a request it returns an exception response: the FC byte has its high bit set (<code>FC | 0x80</code>), followed by a one-byte exception code.</p>
+<table>
+  <tr><th>Code</th><th>Name</th><th>Meaning &amp; Common Cause</th></tr>
+  <tr><td><code>0x01</code></td><td>Illegal Function</td><td>FC not implemented by this device</td></tr>
+  <tr><td><code>0x02</code></td><td>Illegal Data Address</td><td>Register address out of range for this device</td></tr>
+  <tr><td><code>0x03</code></td><td>Illegal Data Value</td><td>Value outside permitted range (e.g. quantity too large)</td></tr>
+  <tr><td><code>0x04</code></td><td>Server Device Failure</td><td>Unrecoverable internal error in the slave</td></tr>
+  <tr><td><code>0x05</code></td><td>Acknowledge</td><td>Request accepted; processing is delayed &mdash; poll for completion</td></tr>
+  <tr><td><code>0x06</code></td><td>Server Device Busy</td><td>Slave busy with a long operation; retry later</td></tr>
+  <tr><td><code>0x08</code></td><td>Memory Parity Error</td><td>Extended memory read/write failed parity check</td></tr>
+  <tr><td><code>0x0A</code></td><td>Gateway Path Unavailable</td><td>Gateway cannot find route to target device</td></tr>
+  <tr><td><code>0x0B</code></td><td>Gateway Target No Response</td><td>Target device did not respond within timeout</td></tr>
+</table>
+
+<hr>
+
+<!-- ══ TRANSACTION FLOW ══════════════════════════════════════════════════ -->
+<h2 id="transaction-flow">14. Request / Response Transaction Flow</h2>
+<ol class="steps">
+  <li>Master builds the <strong>PDU</strong>: Function Code + start address + quantity (read) or value(s) (write).</li>
+  <li>Master wraps the PDU: <em>RTU</em> prepends slave address and appends CRC-16; <em>TCP</em> prepends 7-byte MBAP header.</li>
+  <li>Master transmits the frame over the serial line or TCP socket.</li>
+  <li>Slave validates frame: checks its own address and CRC (RTU) or MBAP (TCP).</li>
+  <li>Slave executes the function (reads register, writes coil, etc.).</li>
+  <li>Slave builds a response PDU: mirrored FC + byte count + data, or exception FC + exception code.</li>
+  <li>Slave wraps and sends the response using the same framing rules.</li>
+  <li>Master receives, validates, and delivers data to the application.</li>
+</ol>
+
+<h3>RTU vs TCP Quick Comparison</h3>
+<table>
+  <tr><th>Feature</th><th>RTU</th><th>TCP/IP</th></tr>
+  <tr><td>Physical medium</td><td>RS-232 / RS-485</td><td>Ethernet, Wi-Fi, fibre</td></tr>
+  <tr><td>Typical speed</td><td>9 600 &ndash; 115 200 baud</td><td>10 / 100 / 1000 Mbit/s</td></tr>
+  <tr><td>Max cable distance</td><td>1200 m (RS-485)</td><td>Network-dependent</td></tr>
+  <tr><td>Error detection</td><td>CRC-16</td><td>TCP checksum (built-in)</td></tr>
+  <tr><td>Concurrent requests</td><td>No &mdash; half-duplex bus</td><td>Yes &mdash; multiple TCP connections</td></tr>
+  <tr><td>Standard port</td><td>N/A (serial)</td><td>502/TCP</td></tr>
+  <tr><td>Security</td><td>Physical access only</td><td>Firewall / VPN strongly recommended</td></tr>
+</table>
+
+<hr>
+
+<hr>
+
+<!-- ══ ABOUT ═════════════════════════════════════════════════════════════ -->
+<h2 id="about">15. About ModbusHub</h2>
+<p><strong>ModbusHub</strong> is an open-source desktop diagnostic and gateway application for industrial automation engineers, PLC programmers, and system integrators who need a powerful yet approachable Modbus front-end tool.</p>
+<table>
+  <tr><th>Component</th><th>Detail</th></tr>
+  <tr><td>UI Language</td><td>C++11 &mdash; Qt 6 (Core, Widgets, Charts, Network) / Qt 5 (Core, Widgets, Network)</td></tr>
+  <tr><td>Backend Language</td><td>C99 &mdash; custom Modbus implementation (<code>modbus.c</code>)</td></tr>
+  <tr><td>Modbus Library</td><td>Built-in &mdash; no external libmodbus dependency</td></tr>
+  <tr><td>Windows System Libs</td><td>ws2_32 (Winsock2)</td></tr>
+  <tr><td>Linux System Libs</td><td>pthread, m</td></tr>
+  <tr><td>Platforms</td><td>Windows, Linux, macOS</td></tr>
+  <tr><td>Build System</td><td>CMake 3.16+</td></tr>
+  <tr><td>License</td><td>MIT</td></tr>
+</table>
+
+</div><!-- /content -->
+
+<div class="footer">
+  <strong>ModbusHub</strong> &mdash; open-source Modbus diagnostic &amp; gateway tool &nbsp;|&nbsp;
+  Built with Qt &amp; custom C Modbus engine &nbsp;|&nbsp; MIT License
+</div>
+
+</div><!-- /page-wrap -->
+</body>
+</html>

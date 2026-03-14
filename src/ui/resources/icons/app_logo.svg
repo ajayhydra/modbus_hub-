@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#1e3a5f"/>
+  
+  <!-- Outer circle -->
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#00b4d8" stroke-width="4"/>
+  
+  <!-- Inner hub -->
+  <circle cx="32" cy="32" r="12" fill="#0077b6"/>
+  
+  <!-- Center dot -->
+  <circle cx="32" cy="32" r="5" fill="#00ff88"/>
+  
+  <!-- Connection points -->
+  <circle cx="32" cy="8" r="4" fill="#ff6b6b"/>
+  <circle cx="56" cy="32" r="4" fill="#ff6b6b"/>
+  <circle cx="32" cy="56" r="4" fill="#ff6b6b"/>
+  <circle cx="8" cy="32" r="4" fill="#ff6b6b"/>
+  
+  <!-- Connection lines -->
+  <line x1="32" y1="12" x2="32" y2="20" stroke="#00b4d8" stroke-width="3"/>
+  <line x1="52" y1="32" x2="44" y2="32" stroke="#00b4d8" stroke-width="3"/>
+  <line x1="32" y1="52" x2="32" y2="44" stroke="#00b4d8" stroke-width="3"/>
+  <line x1="12" y1="32" x2="20" y2="32" stroke="#00b4d8" stroke-width="3"/>
+</svg>

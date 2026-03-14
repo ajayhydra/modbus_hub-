@@ -1,0 +1,9 @@
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/modbus_master.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/edit_cache.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/rebuild_cache.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/list_install_components.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/install.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/install/local.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/install/strip.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/modbus_master_autogen_timestamp_deps.dir
+C:/ajay_k/mod_tcp_gui/build_qt_win/CMakeFiles/modbus_master_autogen.dir

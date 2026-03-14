@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/ajay_k/mod_tcp_gui/build_qt_win/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

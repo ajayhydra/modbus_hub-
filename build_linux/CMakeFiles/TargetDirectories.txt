@@ -1,0 +1,9 @@
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/modbus_master.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/edit_cache.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/rebuild_cache.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/list_install_components.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/install.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/install/local.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/install/strip.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/modbus_master_autogen_timestamp_deps.dir
+/mnt/c/ajay_k/mod_tcp_gui/build_linux/CMakeFiles/modbus_master_autogen.dir
