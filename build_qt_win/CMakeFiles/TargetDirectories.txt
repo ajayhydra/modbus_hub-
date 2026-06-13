@@ -1,0 +1,11 @@
+D:/work_space/modhub/build_qt_win/CMakeFiles/modbus_master.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/package.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/package_source.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/edit_cache.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/rebuild_cache.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/list_install_components.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/install.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/install/local.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/install/strip.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/modbus_master_autogen_timestamp_deps.dir
+D:/work_space/modhub/build_qt_win/CMakeFiles/modbus_master_autogen.dir

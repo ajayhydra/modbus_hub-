@@ -1,0 +1,41 @@
+# GitHub Actions CI for ModbusHub.
+#
+# Runs on every push and PR to main. Builds the Qt 6 executable on Linux,
+# Windows, and macOS to catch portability regressions across the three
+# platforms the project advertises.
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.7.2'
+          cache: true
+
+      - name: Configure (CMake)
+        shell: bash
+        run: |
+          cmake -S . -B build \
+            -DUSE_QT6=ON \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        shell: bash
+        run: cmake --build build --parallel --config Release

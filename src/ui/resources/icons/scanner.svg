@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- magnifier lens scanning the network -->
+  <circle cx="10" cy="10" r="7"/>
+  <line x1="20" y1="20" x2="15" y2="15"/>
+  <!-- discovered network nodes inside the lens -->
+  <g stroke-width="1.2">
+    <line x1="10" y1="6.8" x2="6.6" y2="12"/>
+    <line x1="10" y1="6.8" x2="13.4" y2="12"/>
+    <line x1="6.6" y1="12" x2="13.4" y2="12"/>
+  </g>
+  <circle cx="10" cy="6.8" r="1.4" fill="#34C759" stroke="none"/>
+  <circle cx="6.6" cy="12" r="1.4" fill="#34C759" stroke="none"/>
+  <circle cx="13.4" cy="12" r="1.4" fill="#FF9500" stroke="none"/>
+</svg>

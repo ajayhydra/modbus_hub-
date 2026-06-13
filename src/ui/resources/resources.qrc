@@ -1,0 +1,23 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/docs">
+        <file>manual.html</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>icons/master.svg</file>
+        <file>icons/gateway.svg</file>
+        <file>icons/connect.svg</file>
+        <file>icons/disconnect.svg</file>
+        <file>icons/read.svg</file>
+        <file>icons/write.svg</file>
+        <file>icons/clear.svg</file>
+        <file>icons/play.svg</file>
+        <file>icons/stop.svg</file>
+        <file>icons/search.svg</file>
+        <file>icons/scanner.svg</file>
+        <file>icons/settings.svg</file>
+        <file>icons/logs.svg</file>
+        <file>icons/app_logo.svg</file>
+        <file>icons/manual.svg</file>
+    </qresource>
+</RCC>

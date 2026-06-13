@@ -1,0 +1,38 @@
+{
+	"BUILD_DIR" : "/mnt/d/work_space/modhub/build_linux/modbus_master_autogen",
+	"CMAKE_BINARY_DIR" : "/mnt/d/work_space/modhub/build_linux",
+	"CMAKE_CURRENT_BINARY_DIR" : "/mnt/d/work_space/modhub/build_linux",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/mnt/d/work_space/modhub",
+	"CMAKE_SOURCE_DIR" : "/mnt/d/work_space/modhub",
+	"GENERATOR" : "Unix Makefiles",
+	"INCLUDE_DIR" : "/mnt/d/work_space/modhub/build_linux/modbus_master_autogen/include",
+	"INPUTS" : 
+	[
+		"/mnt/d/work_space/modhub/src/ui/resources/manual.html",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/manual.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/play.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/logs.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/settings.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/gateway.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/connect.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/clear.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/read.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/disconnect.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/scanner.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/master.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/search.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/write.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/app_logo.svg",
+		"/mnt/d/work_space/modhub/src/ui/resources/icons/stop.svg"
+	],
+	"LOCK_FILE" : "/mnt/d/work_space/modhub/build_linux/CMakeFiles/modbus_master_autogen.dir/AutoRcc_resources_DOHTCAYJZN_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "DOHTCAYJZN",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/qt6/libexec/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/mnt/d/work_space/modhub/build_linux/CMakeFiles/modbus_master_autogen.dir/AutoRcc_resources_DOHTCAYJZN_Used.txt",
+	"SOURCE" : "/mnt/d/work_space/modhub/src/ui/resources/resources.qrc",
+	"VERBOSITY" : 0
+}

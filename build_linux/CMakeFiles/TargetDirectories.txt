@@ -1,0 +1,9 @@
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/modbus_master.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/edit_cache.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/rebuild_cache.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/list_install_components.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/install.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/install/local.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/install/strip.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/modbus_master_autogen_timestamp_deps.dir
+/mnt/d/work_space/modhub/build_linux/CMakeFiles/modbus_master_autogen.dir

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b3a63"/>
+      <stop offset="1" stop-color="#0a1b36"/>
+    </linearGradient>
+    <radialGradient id="hub" cx="0.38" cy="0.34" r="0.75">
+      <stop offset="0" stop-color="#3a9bd6"/>
+      <stop offset="1" stop-color="#0b4a78"/>
+    </radialGradient>
+    <radialGradient id="core" cx="0.38" cy="0.34" r="0.8">
+      <stop offset="0" stop-color="#cbffe2"/>
+      <stop offset="1" stop-color="#3df58a"/>
+    </radialGradient>
+    <radialGradient id="node" cx="0.36" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#ffc79a"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="64" height="64" rx="13.5" fill="url(#bg)"/>
+
+  <!-- Connection spokes -->
+  <g stroke="#2ad4e8" stroke-width="2" stroke-linecap="round">
+    <line x1="32" y1="32" x2="45.6" y2="18.4"/>
+    <line x1="32" y1="32" x2="18.4" y2="18.4"/>
+    <line x1="32" y1="32" x2="18.4" y2="45.6"/>
+    <line x1="32" y1="32" x2="45.6" y2="45.6"/>
+  </g>
+
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="19.2" fill="none" stroke="#2ad4e8" stroke-width="2.4"/>
+
+  <!-- Satellite nodes -->
+  <circle cx="45.6" cy="18.4" r="3.6" fill="url(#node)"/>
+  <circle cx="18.4" cy="18.4" r="3.6" fill="url(#node)"/>
+  <circle cx="18.4" cy="45.6" r="3.6" fill="url(#node)"/>
+  <circle cx="45.6" cy="45.6" r="3.6" fill="url(#node)"/>
+
+  <!-- Central hub -->
+  <circle cx="32" cy="32" r="8.6" fill="url(#hub)"/>
+
+  <!-- Glowing core -->
+  <circle cx="32" cy="32" r="3.9" fill="url(#core)"/>
+</svg>

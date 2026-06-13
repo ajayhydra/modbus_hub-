@@ -1,0 +1,5 @@
+=== ModbusHub Application Log ===
+Started: 2026-06-12 11:53:30
+
+2026-06-12 11:53:30 [INFO] [Logger] Application logger initialized (file=yes, console=no)
+2026-06-12 11:53:30 [INFO] [Application] ModbusHub starting up
