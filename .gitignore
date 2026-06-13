@@ -1,0 +1,14 @@
+build_linux/
+build_qt_win/
+
+*.o
+*.obj
+*.exe
+*.a
+*.so
+*.dll
+
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
